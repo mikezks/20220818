@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'flight-app',
 
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],

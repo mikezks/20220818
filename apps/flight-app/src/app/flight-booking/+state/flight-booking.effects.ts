@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FlightService } from '@flight-workspace/flight-lib';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { map, mergeMap, of, switchMap, withLatestFrom } from 'rxjs';
+import { map, mergeMap, switchMap } from 'rxjs';
 import * as FlightBookingActions from './flight-booking.actions';
-import { selectFlights } from './flight-booking.selectors';
 
 
 @Injectable()
@@ -31,8 +29,7 @@ export class FlightBookingEffects {
   loadFlights$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FlightBookingActions.flightsLoad),
-      withLatestFrom(this.store.select(selectFlights)),
-      switchMap(([action, flights]) => this.flightService.find(
+      switchMap(action => this.flightService.find(
         action.from,
         action.to,
         action.urgent
@@ -44,6 +41,5 @@ export class FlightBookingEffects {
 
   constructor(
     private actions$: Actions,
-    private flightService: FlightService,
-    private store: Store) {}
+    private flightService: FlightService) {}
 }
