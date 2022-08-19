@@ -32,7 +32,7 @@ export class FlightSearchComponent implements OnInit {
     if (!this.from || !this.to) return;
 
     this.store.dispatch(
-      fromFlightBooking.searchTrigger({
+      fromFlightBooking.FlightBookingAction.searchTrigger({
         from: this.from,
         to: this.to,
         urgent: this.urgent

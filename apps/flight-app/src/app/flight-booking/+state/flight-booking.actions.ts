@@ -1,5 +1,5 @@
 import { Flight } from '@flight-workspace/flight-lib';
-import { createAction, props } from '@ngrx/store';
+import { createAction, createActionGroup, props } from '@ngrx/store';
 
 
 export const searchTrigger = createAction(
@@ -31,3 +31,11 @@ export const flightUpdate = createAction(
   '[FlightBooking] Load FlightBookings Failure',
   props<{ error: any }>()
 ); */
+
+export const FlightBookingAction = createActionGroup({
+  source: 'Flight Booking',
+  events: {
+    'Search Trigger': props<{ from: string, to: string, urgent: boolean }>(),
+    'Filter update': props<{ from: string, to: string, urgent: boolean }>()
+  }
+});
