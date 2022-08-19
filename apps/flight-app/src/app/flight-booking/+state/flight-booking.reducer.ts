@@ -1,5 +1,5 @@
 import { Flight } from '@flight-workspace/flight-lib';
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import * as FlightBookingActions from './flight-booking.actions';
 
 export const flightBookingFeatureKey = 'flightBooking';
@@ -51,25 +51,28 @@ export interface FlightBookingRootState {
   flightBooking: State;
 }
 
-export const reducer = createReducer(
-  initialState,
+export const flightBookingFeature = createFeature({
+  name: 'flightBooking',
+  reducer: createReducer(
+    initialState,
 
-  on(FlightBookingActions.filterUpdate, (state, action) => {
-    return { ...state, filter: {
-      from: action.from,
-      to: action.to,
-      urgent: action.urgent
-    }};
-  }),
-  on(FlightBookingActions.flightsLoaded, (state, action) => {
-    const flights = action.flights;
-    return { ...state, flights };
-  }),
-  on(FlightBookingActions.flightUpdate, (state, action) => {
-    const flights = state.flights.map(
-      flight => action.flight.id === flight.id ? action.flight : flight
-    );
-    return { ...state, flights };
-  }),
+    on(FlightBookingActions.filterUpdate, (state, action) => {
+      return { ...state, filter: {
+        from: action.from,
+        to: action.to,
+        urgent: action.urgent
+      }};
+    }),
+    on(FlightBookingActions.flightsLoaded, (state, action) => {
+      const flights = action.flights;
+      return { ...state, flights };
+    }),
+    on(FlightBookingActions.flightUpdate, (state, action) => {
+      const flights = state.flights.map(
+        flight => action.flight.id === flight.id ? action.flight : flight
+      );
+      return { ...state, flights };
+    }),
+  )
+});
 
-);

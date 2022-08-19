@@ -1,37 +1,12 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromFlightBooking from './flight-booking.reducer';
+import { createSelector } from '@ngrx/store';
+import { flightBookingFeature } from './flight-booking.reducer';
 
-export const selectFlightBookingState = createFeatureSelector<fromFlightBooking.State>(
-  fromFlightBooking.flightBookingFeatureKey
-);
-
-export const selectFlights = createSelector(
-  // Selectors
-  selectFlightBookingState,
-  // Projector
-  state => state.flights
-);
-
-export const selectPassengers = createSelector(
-    selectFlightBookingState,
-    (state) => state.passenger
-);
-
-export const selectBookings = createSelector(
-    selectFlightBookingState,
-    (state) => state.bookings
-);
-
-export const selectUser = createSelector(
-    selectFlightBookingState,
-    (state) => state.user
-);
 
 export const selectActiveUserFlights = createSelector(
   // Selectors
-  selectFlights,
-  selectBookings,
-  selectUser,
+  flightBookingFeature.selectFlights,
+  flightBookingFeature.selectBookings,
+  flightBookingFeature.selectUser,
   // Projectors
   (flights, bookings, user) => {
     const activeUserPassengerId = user.passengerId;
