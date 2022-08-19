@@ -13,7 +13,7 @@ export class FlightSearchComponent implements OnInit {
   from = 'Hamburg'; // in Germany
   to = 'Graz'; // in Austria
   urgent = false;
-  flights$ = this.store.select(fromFlightBooking.selectActiveUserFlights);
+  flights$ = this.store.select(fromFlightBooking.selectFlights);
 
   // "shopping basket" with selected flights
   basket: { [id: number]: boolean } = {
@@ -32,7 +32,7 @@ export class FlightSearchComponent implements OnInit {
     if (!this.from || !this.to) return;
 
     this.store.dispatch(
-      fromFlightBooking.flightsLoad({
+      fromFlightBooking.searchTrigger({
         from: this.from,
         to: this.to,
         urgent: this.urgent

@@ -2,6 +2,16 @@ import { Flight } from '@flight-workspace/flight-lib';
 import { createAction, props } from '@ngrx/store';
 
 
+export const searchTrigger = createAction(
+  '[FlightBooking] Search trigger',
+  props<{ from: string, to: string, urgent: boolean }>()
+);
+
+export const filterUpdate = createAction(
+  '[FlightBooking] Filter update',
+  props<{ from: string, to: string, urgent: boolean }>()
+);
+
 export const flightsLoad = createAction(
   '[FlightBooking] Flights load',
   props<{ from: string, to: string, urgent: boolean }>()

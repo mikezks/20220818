@@ -6,6 +6,11 @@ export const flightBookingFeatureKey = 'flightBooking';
 
 export interface State {
   flights: Flight[];
+  filter: {
+    from: string,
+    to: string,
+    urgent: boolean
+  },
   // NEW:
   passenger: Record<
     number,
@@ -26,6 +31,11 @@ export interface State {
 
 export const initialState: State = {
   flights: [],
+  filter: {
+    from: 'Hamburg',
+    to: 'Graz',
+    urgent: false
+  },
   passenger: {
     1: { id: 1, name: 'Smith', firstName: 'Anne' }
   },
@@ -44,6 +54,13 @@ export interface FlightBookingRootState {
 export const reducer = createReducer(
   initialState,
 
+  on(FlightBookingActions.filterUpdate, (state, action) => {
+    return { ...state, filter: {
+      from: action.from,
+      to: action.to,
+      urgent: action.urgent
+    }};
+  }),
   on(FlightBookingActions.flightsLoaded, (state, action) => {
     const flights = action.flights;
     return { ...state, flights };
