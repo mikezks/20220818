@@ -1,4 +1,4 @@
-<ng-container *ngIf="flights$ | async as flights">
+<ng-container *ngIf="selectViewModel$ | async as vm">
 
   <div class="card">
 
@@ -31,13 +31,13 @@
             Search
           </button>
 
-          <button *ngIf="flights.length > 0" class="btn btn-default"
-            (click)="delay(flights[0])">
+          <button *ngIf="vm.flights.length > 0" class="btn btn-default"
+            (click)="delay(vm.flights[0])">
             Delay 1st Flight
           </button>
 
-          <div *ngIf="flights.length > 0">
-            {{flights.length}} flights found!
+          <div *ngIf="vm.flights.length > 0">
+            {{vm.flights.length}} flights found!
           </div>
 
         </div>
@@ -46,8 +46,16 @@
     </div>
   </div>
 
+  <div *ngIf="vm.filters" class="card">
+    <div class="content">
+      <pre>Previous searches: {{
+        vm.filters | json
+  }}</pre>
+    </div>
+  </div>
+
   <div class="row">
-    <div *ngFor="let f of flights">
+    <div *ngFor="let f of vm.flights">
 
       <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
         <flight-card
