@@ -18,12 +18,13 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { EntityDataModule, DefaultDataServiceConfig } from '@ngrx/data';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
-import { reducers, metaReducers } from './+state';
+import { reducers, metaReducers, ROUTER_STATE_KEY } from './+state';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { PassengersModule } from './passengers/passengers.module';
 import { defaultDataServiceConfig, entityConfig } from './+state/data';
 import { PassengerDataModule } from './passenger-data/passenger-data.module';
+import { HydrationManagerEffects } from './+state/hydration-manager/hydration.effects';
 
 @NgModule({
   imports: [
@@ -40,13 +41,15 @@ import { PassengerDataModule } from './passenger-data/passenger-data.module';
     SharedModule.forRoot(),
     RouterModule.forRoot(APP_ROUTES),
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([HydrationManagerEffects]),
     StoreRouterConnectingModule.forRoot({
-      stateKey: 'router',
+      stateKey: ROUTER_STATE_KEY,
       routerState: RouterState.Minimal
     }),
     EntityDataModule.forRoot(entityConfig),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    !environment.production ? StoreDevtoolsModule.instrument({
+      name: 'Flight App'
+    }) : [],
   ],
   declarations: [
     AppComponent,

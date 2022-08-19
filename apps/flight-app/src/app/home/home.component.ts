@@ -1,8 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HydrationManagerActions } from '../+state/hydration-manager';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +21,9 @@ export class HomeComponent implements OnInit {
     return this._userName;
   }
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store) {}
 
   changed($event: CustomEvent): void {
     console.debug('$event.detail ', $event.detail);
@@ -39,5 +43,13 @@ export class HomeComponent implements OnInit {
 
   logout(): void {
     this._userName = '';
+  }
+
+  manageHydration(action: 'WRITE' | 'READ' | 'RESET') {
+    this.store.dispatch(
+      action === 'WRITE' ? HydrationManagerActions.hydrateState() :
+      action === 'RESET' ? HydrationManagerActions.resetState() :
+      HydrationManagerActions.rehydrateState()
+    );
   }
 }
